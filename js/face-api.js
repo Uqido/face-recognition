@@ -1983,7 +1983,7 @@
       if (uri === '/') {
           return {
               modelBaseUri: '/',
-              manifestUri: "/" + defaultManifestFilename
+              manifestUri: "./" + defaultManifestFilename
           };
       }
       var protocol = uri.startsWith('http://') ? 'http://' : uri.startsWith('https://') ? 'https://' : '';
