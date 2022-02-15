@@ -1982,7 +1982,7 @@
       }
       if (uri === '/') {
           return {
-              modelBaseUri: '/',
+              modelBaseUri: './',
               manifestUri: "./" + defaultManifestFilename
           };
       }
