@@ -152,17 +152,20 @@
 
         const resizedResults = faceapi.resizeResults(results, dims)
 
+
+        faceapi.draw.drawDetections(canvas, resizedResults, { withScore: true })
+
         //console.log(resizedResults)
 
         //if (withBoxes) {
         //  faceapi.draw.drawDetections(canvas, resizedResult)
         //}
-        for(const resizedResult of resizedResults){
-          //console.log(resizedResult)
-        const label = `${ Math.trunc(resizedResult.detection.score*100) }% human_face`
-        new faceapi.draw.DrawBox(resizedResult.detection.box, { label }).draw(canvas)
-        faceapi.draw.drawFaceLandmarks(canvas, resizedResult)
-        }
+        //for(const resizedResult of resizedResults){
+        //  //console.log(resizedResult)
+        //const label = `${ Math.trunc(resizedResult.detection.score*100) }% human_face`
+        //new faceapi.draw.DrawBox(resizedResult.detection.box, { label }).draw(canvas)
+        //faceapi.draw.drawFaceLandmarks(canvas, resizedResult)
+        //}
     
 
       setTimeout(() => onPlay())

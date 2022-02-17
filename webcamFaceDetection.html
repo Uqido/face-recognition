@@ -128,7 +128,7 @@
 
       const ts = Date.now()
 
-      const result = await faceapi.detectSingleFace(videoEl, options)
+      const result = await faceapi.detectAllFaces(videoEl, options)
 
       updateTimeStats(Date.now() - ts)
 
