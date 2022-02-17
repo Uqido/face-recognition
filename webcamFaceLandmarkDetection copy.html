@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <script src="js/face-api.js"></script>
-  <script src="js/faceDetectionControls.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-</head>
-<body>
-  <div class="center-content page-container">
+    <head>
+        <script src="js/face-api.js"></script>
+        <script src="js/faceDetectionControls.js"></script>
+        <link href="styles.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    </head>
+    <body>
+        <div class="center-content page-container">
 
-    <div class="progress" id="loader">
-      <div class="indeterminate"></div>
-    </div>
-    <div style="position: relative" class="margin">
-      <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
-      <canvas id="overlay" />
-    </div>
+            <div class="progress" id="loader">
+                <div class="indeterminate"></div>
+            </div>
+            <div class="margin" style="position: relative">
+                <video autoplay id="inputVideo" muted onloadedmetadata="onPlay(this)" playsinline></video>
+                <canvas id="overlay"/>
+            </div>
 
-    <div class="row side-by-side">
+            <div class="row side-by-side">
 
-      <!-- face_detector_selection_control 
+                <!-- face_detector_selection_control 
       <div id="face_detector_selection_control" class="row input-field" style="margin-right: 20px;">
         <select id="selectFaceDetector">
           <option value="ssd_mobilenetv1">SSD Mobilenet V1</option>
@@ -30,15 +30,15 @@
         <label>Select Face Detector</label>
       </div>
        face_detector_selection_control -->
-
-      <!-- check boxes 
+                
+                      <!-- check boxes 
       <div class="row" style="width: 220px;">
         <input type="checkbox" id="hideBoundingBoxesCheckbox" onchange="onChangeHideBoundingBoxes(event)" />
         <label for="hideBoundingBoxesCheckbox">Hide Bounding Boxes</label>
       </div>
        check boxes -->
-
-      <!-- fps_meter 
+                
+                      <!-- fps_meter 
       <div id="fps_meter" class="row side-by-side">
         <div>
           <label for="time">Time:</label>
@@ -49,10 +49,10 @@
       </div>
        fps_meter -->
 
-    </div>
+            </div>
 
 
-    <!-- ssd_mobilenetv1_controls
+            <!-- ssd_mobilenetv1_controls
     <span id="ssd_mobilenetv1_controls">
       <div class="row side-by-side">
         <div class="row">
@@ -74,8 +74,8 @@
       </div>
     </span>
      ssd_mobilenetv1_controls -->
-
-    <!-- tiny_face_detector_controls 
+            
+                <!-- tiny_face_detector_controls 
     <span id="tiny_face_detector_controls">
       <div class="row side-by-side">
         <div class="row input-field" style="margin-right: 20px;">
@@ -111,9 +111,9 @@
     </span>
      tiny_face_detector_controls -->
 
-  </body>
+        </body>
 
-  <script>
+        <script>
     let forwardTimes = []
     let withBoxes = true
 
@@ -139,26 +139,31 @@
 
       const ts = Date.now()
 
-      const result = await faceapi.detectSingleFace(videoEl, options).withFaceLandmarks()
+      const results = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks()
+
+      if (!results.length) {
+        return
+      }
 
       updateTimeStats(Date.now() - ts)
 
       const canvas = $('#overlay').get(0)
-        const dims = faceapi.matchDimensions(canvas, videoEl, true)
+      const dims = faceapi.matchDimensions(canvas, videoEl, true)
 
-      if (result) {
-        
-        const resizedResult = faceapi.resizeResults(result, dims)
+        const resizedResults = faceapi.resizeResults(results, dims)
+
+        //console.log(resizedResults)
 
         //if (withBoxes) {
         //  faceapi.draw.drawDetections(canvas, resizedResult)
         //}
+        for(const resizedResult of resizedResults){
+          //console.log(resizedResult)
         const label = `${ Math.trunc(resizedResult.detection.score*100) }% human_face`
         new faceapi.draw.DrawBox(resizedResult.detection.box, { label }).draw(canvas)
         faceapi.draw.drawFaceLandmarks(canvas, resizedResult)
-      }else{
-
-      }
+        }
+    
 
       setTimeout(() => onPlay())
     }
@@ -184,4 +189,6 @@
     })
   </script>
 </body>
-</html>
+</html 
+    </body>
+</html>>
